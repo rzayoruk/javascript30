@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KONAMI CODE</title>
+    <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+  </head>
+  <body>
+    <script>
+      const pressed = []
+      const secret = "rizayoruk"
+
+      window.addEventListener("keyup", (e) => {
+        console.log(e.key)
+        pressed.push(e.key)
+        pressed.splice(-secret.length - 1, pressed.length - secret.length) // nice to know how splice works.
+
+        if(pressed.join('').includes(secret)){
+            console.log("BANG BANG!:.")
+            cornify_add()
+        }
+      })
+    </script>
+  </body>
+</html>
