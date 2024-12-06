@@ -103,22 +103,21 @@
       let lastChecked
 
       function handleCheckbox(e) {
-        let inBetween = false
         if (e.shiftKey && this.checked) {
+          let inBetween = false
+
           checkboxes.forEach((checkbox) => {
-            console.log(checkbox)
+
             if (checkbox === this || checkbox === lastChecked) {
               inBetween = !inBetween
-              console.log("start between")
             }
-
-            if (inBetween) {
-              checkbox.checked = true
-            }
+            inBetween ? (checkbox.checked = true) : ""
           })
         }
+
         lastChecked = this
       }
+
       checkboxes.forEach((checkbox) =>
         checkbox.addEventListener("click", handleCheckbox)
       )
