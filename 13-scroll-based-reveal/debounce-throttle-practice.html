@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice</title>
+    <style>
+      html {
+        background-color: black;
+        color: white;
+      }
+      input {
+        border: 3px solid rebeccapurple;
+        padding: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" placeholder="just mousemove for test" />
+    <div>
+      <b>Default:</b>
+      <span id="default"></span>
+    </div>
+    <div>
+      <b>Debounce:</b>
+      <span id="debounce"></span>
+    </div>
+    <div>
+      <b>Throttle:</b>
+      <span id="throttle"></span>
+    </div>
+    <script>
+      const input = document.querySelector("input")
+      const defaultText = document.getElementById("default")
+      const debounceText = document.getElementById("debounce")
+      const throttleText = document.getElementById("throttle")
+
+      // input.addEventListener("input", (e) => {
+      //   defaultText.textContent = e.target.value
+      //   updateDebounce(e.target.value)
+      //   updateThrottle(e.target.value)
+      // })
+
+      const updateDebounce = debounce(() => {
+        //debounceText.textContent = text
+        incrementCount(debounceText)
+      })
+      const updateThrottle = throttle(() => {
+        //throttleText.textContent = text
+        incrementCount(throttleText)
+      })
+
+      //nice to understand
+      function debounce(cb, delay = 1000) {
+        let timeout
+        return (...args) => {
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            cb(...args)
+          }, delay)
+        }
+      }
+      function throttle(cb, delay = 1000) {
+        let shouldWait = false
+        let waitingArgs
+        const func = () => {
+          if (waitingArgs == null) {
+            shouldWait = false
+          } else {
+            cb(...waitingArgs)
+            waitingArgs = null
+            setTimeout(func, delay)
+          }
+        }
+
+        return (...args) => {
+          if (shouldWait) {
+            waitingArgs = args
+            return
+          }
+
+          cb(...args)
+          shouldWait = true
+
+          setTimeout(func, delay)
+        }
+      }
+      document.addEventListener("mousemove", (e) => {
+        incrementCount(defaultText)
+        updateDebounce()
+        updateThrottle()
+      })
+
+      function incrementCount(element) {
+        element.textContent = (parseInt(element.innerText) || 0) + 1
+      }
+      // https://www.youtube.com/watch?v=cjIswDCKgu0&t=155s is the reference
+    </script>
+  </body>
+</html>
